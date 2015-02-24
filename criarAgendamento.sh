@@ -22,3 +22,6 @@ cat > desligar/${INSTANCE_ID}.sh << EOF
 date +"[%d/%m - %T]" >> desligar/logs/${INSTANCE_ID}.log
 aws ec2 stop-instances --instance-ids $INSTANCE_ID >> desligar/logs/${INSTANCE_ID}.log 2>&1
 EOF
+
+chmod +x ligar/*.sh
+chmod +x desligar/*.sh
