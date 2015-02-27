@@ -2,14 +2,21 @@
 
 FUNC=$1
 INSTANCE_ID=$2
-INSTANCE_NAME=`aws ec2 describe-instances --instance-id $INSTANCE_ID --output text | grep Name | cut -f 3`
-LIGAR=`aws ec2 start-instances --instance-ids`
-DESLIGAR=`aws ec2 stop-instances --instance-ids`
 
+if [ ! -z $2 ]; then
+	INSTANCE_NAME=`aws ec2 describe-instances --instance-id $INSTANCE_ID --output text | grep Name | cut -f 3`
+	LIGAR=`aws ec2 start-instances --instance-ids $INSTANCE_ID`
+	DESLIGAR=`aws ec2 stop-instances --instance-ids $INSTANCE_ID`
+fi
 
-if [ ! -e listaAgendamento.txt]; then
+if [ ! -e listaAgendamento.txt ]; then
 	touch listaAgendamento.txt
 fi
+
+if [ ! -d cfg ]; then
+	mkdir cfg
+fi
+
 
 function add(){
 cat > cfg/${INSTANCE_ID}.cfg << EOF
@@ -31,11 +38,11 @@ if [ -z $2 ]; then
 	for CFG_FILE in cfg/*.cfg
 	do
 		source $CFG_FILE
-		$LIGAR $INSTANCE_ID
+		#$LIGAR $INSTANCE_ID
 		echo "Ligando $INSTANCE_NAME"
 	done
 else
-	$LIGAR $INSTANCE_ID
+	#$LIGAR $INSTANCE_ID
 	echo "Ligando $INSTANCE_NAME"
 fi
 }
@@ -45,11 +52,11 @@ if [ -z $2 ]; then
         for CFG_FILE in cfg/*.cfg
         do
                 source $CFG_FILE
-                $DESLIGAR $INSTANCE_ID
+                #$DESLIGAR $INSTANCE_ID
                 echo "Desligando $INSTANCE_NAME"
         done
 else
-        $DESLIGAR $INSTANCE_ID
+        #$DESLIGAR $INSTANCE_ID
         echo "Desligando $INSTANCE_NAME"
 fi
 }
@@ -59,5 +66,6 @@ case $FUNC in
 	'remove') remove;;
 	'on') on;;
 	'off') off;;
-	*) echo $"Uso: ./aws-cron-manager {on/off/add/remove} instance_id\non/off sem instance_id liga/desliga todas as maquinas no agendamento";;
+	*) echo "Uso: ./aws-cron-manager {on/off/add/remove} instance_id
+on/off sem instance_id liga/desliga todas as maquinas no agendamento";;
 esac
