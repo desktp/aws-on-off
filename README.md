@@ -3,6 +3,8 @@ Scripts para automatizar insercao de máquinas AWS num agendador crontab
 
 Uso:
 
+Copiar aws.conf em /etc/rsyslog.d/
+
 O script possui 4 funcoes:
 
 add instance_id: adiciona máquina ao agendamento <br>
