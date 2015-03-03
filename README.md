@@ -11,6 +11,7 @@ O script possui 4 funcoes:
 
 To-do:
 
-Implementar logar retorno no syslog
+Implementar logar retorno no syslog - DONE
 Implementar horários individuais e automatizar inserção no cron
+Aceitar diretório de cfg como argumento
 
